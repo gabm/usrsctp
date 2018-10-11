@@ -1228,6 +1228,9 @@ recv_thread_init(void)
 #endif
 					SCTP_BASE_VAR(userspace_udpsctp) = -1;
 				} else {
+                    socklen_t size =  sizeof(struct sockaddr_in);
+                    getsockname(SCTP_BASE_VAR(userspace_udpsctp),(struct sockaddr *)&addr_ipv4,&size );
+                    SCTP_BASE_SYSCTL(sctp_udp_tunneling_port) = ntohs(addr_ipv4.sin_port);
 					setReceiveBufferSize(SCTP_BASE_VAR(userspace_udpsctp), SB_RAW); /* 128K */
 					setSendBufferSize(SCTP_BASE_VAR(userspace_udpsctp), SB_RAW); /* 128K Is this setting net.inet.raw.maxdgram value? Should it be set to 64K? */
 				}
